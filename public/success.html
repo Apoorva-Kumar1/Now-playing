@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success! - Spotify Now Playing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #151b3d;
+            --accent: #1db954;
+            --accent-bright: #1ed760;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --glow: rgba(29, 185, 84, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(29, 185, 84, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(30, 215, 96, 0.1) 0%, transparent 50%);
+            animation: drift 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(5%, 5%) rotate(3deg); }
+            66% { transform: translate(-5%, 3%) rotate(-3deg); }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: bounceIn 0.6s ease-out;
+            box-shadow: 0 0 40px var(--glow);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: fadeInDown 0.8s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .url-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+            position: relative;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .url-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+            border-radius: 16px 16px 0 0;
+        }
+
+        .url-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .url-display {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--accent-bright);
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            color: white;
+            box-shadow: 0 10px 30px var(--glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px var(--glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .tooltip {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--accent-bright);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            border: 1px solid var(--accent);
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .url-display {
+                font-size: 1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tooltip" id="tooltip">Link copied to clipboard!</div>
+
+    <div class="container">
+        <div class="success-icon"></div>
+        
+        <h1>You're All Set!</h1>
+        <p>Your shareable music profile is ready. Share your unique URL with friends so they can see what you're listening to!</p>
+
+        <div class="url-card">
+            <div class="url-label">Your Unique URL</div>
+            <div class="url-display" id="userUrl">Loading...</div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="copyUrl()">Copy Link</button>
+                <button class="btn btn-secondary" onclick="viewPage()">View My Page</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get username from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        
+        // Construct full URL
+        const fullUrl = `${window.location.origin}/${username}`;
+        document.getElementById('userUrl').textContent = fullUrl;
+
+        function copyUrl() {
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.classList.add('show');
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 3000);
+            });
+        }
+
+        function viewPage() {
+            window.location.href = `/${username}`;
+        }
+    </script>
+</body>
+</html>
